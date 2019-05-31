@@ -52,7 +52,7 @@ public class TestBuffer1 {
 
         System.out.println("-----------------------------put()----------------------------------------");
         //2.利用put()方法,存入数据到缓冲区
-        String str = new String("wuyuan");
+        String str = "wuyuan";
         buf.put(str.getBytes());//写数据模式
         System.out.println(buf.position());
         System.out.println(buf.limit());
