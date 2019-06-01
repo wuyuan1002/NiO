@@ -39,7 +39,7 @@ import java.nio.ByteBuffer;
  * @version 1.0
  * @date 2019/5/31
  */
-public class TestBuffer1 {
+public class BufferTest1 {
 
     public static void main(String[] args) {
 

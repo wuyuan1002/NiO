@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  * @version 1.0
  * @date 2019/5/31
  */
-public class TestBuffer2 {
+public class BufferTest2 {
 
 	public static void main(String[] args) {
 
