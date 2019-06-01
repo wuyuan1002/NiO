@@ -64,7 +64,6 @@ public class TestBuffer1 {
          *
          *  get()方法读取的是position和limit之间的数据，
          *  所以flip()方法所进行的操作是: limit = position; position = 0;
-         *
          */
         buf.flip();
         System.out.println(buf.position());
