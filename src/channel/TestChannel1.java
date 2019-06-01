@@ -1,4 +1,4 @@
-package niodemo2;
+package channel;
 /**
  * 1.通道(Channel):源节点与目标节点之间的链接，相当于铁路，
  *                 在java NIO中负责缓冲区数据的传输，Channel本身不存储数据，因此，需要配合缓冲区进行传输。

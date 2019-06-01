@@ -1,4 +1,4 @@
-package niodemo1;
+package buffer;
 
 import java.nio.ByteBuffer;
 
