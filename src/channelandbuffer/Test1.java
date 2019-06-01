@@ -24,7 +24,7 @@ public class Test1 {
 
         ByteBuffer buffer = ByteBuffer.allocate(1024);
 
-        while (inchannel.read(buffer) != -1){
+        while (inchannel.read(buffer) != -1) {
             buffer.flip();
             outchannel.write(buffer);
             buffer.clear();
