@@ -26,7 +26,7 @@ public class Test1 {
         //新建一个缓冲区
         ByteBuffer buffer = ByteBuffer.allocate(1024);
 
-        //从通道1中读取数据存入缓冲区然后再从缓冲区中把数据写入通道2，
+        //从通道1中读取数据存入缓冲区然后再从缓冲区中把数据写入通道2
         while (inchannel.read(buffer) != -1) {
             buffer.flip();
             outchannel.write(buffer);
