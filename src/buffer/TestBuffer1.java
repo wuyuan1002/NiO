@@ -110,7 +110,7 @@ public class TestBuffer1 {
 
         System.out.println("-----------------------------clear()----------------------------------------");
         /*
-         * 6.清空缓冲区
+         * 7.清空缓冲区
          *   clear()方法只是重置了position和limit的位置，里面的数据处于“被遗忘状态”
          *   使 position = 0; limit = capacity;
          */
