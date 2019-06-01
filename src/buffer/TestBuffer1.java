@@ -59,7 +59,8 @@ public class TestBuffer1 {
         System.out.println(buf.capacity());
 
         System.out.println("-----------------------------flip()----------------------------------------");
-        /*3.切换为读数据的模式,也就是重置position和limit的位置，
+        /*
+         * 3.切换为读数据的模式,也就是重置position和limit的位置，
          *  写入数据后，position在数据的下一个位置，而读数据的话position要位于要操作的数据的最前面
          *
          *  get()方法读取的是position和limit之间的数据，
@@ -108,7 +109,8 @@ public class TestBuffer1 {
         }
 
         System.out.println("-----------------------------clear()----------------------------------------");
-        /*6.清空缓冲区
+        /*
+         * 6.清空缓冲区
          *   clear()方法只是重置了position和limit的位置，里面的数据处于“被遗忘状态”
          *   使 position = 0; limit = capacity;
          */
