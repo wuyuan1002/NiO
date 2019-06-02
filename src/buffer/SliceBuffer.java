@@ -23,18 +23,14 @@ public class SliceBuffer {
             System.out.println(buffer.get()+" == buffer原来的");
         }
 
-//        System.err.println("---------------------");
-
         buffer.position(2).limit(6);
         ByteBuffer slicebuffer = buffer.slice();
 
-//        System.out.println("---------");
         while (slicebuffer.hasRemaining()) {
             System.out.println(slicebuffer.get()+" ** slicebuffer的");
         }
         slicebuffer.flip();
 
-//        System.out.println("---------");
         for (int i = 0; i < slicebuffer.capacity(); ++i) {
             byte b = slicebuffer.get(i);
             slicebuffer.put((byte) (b * 2));
