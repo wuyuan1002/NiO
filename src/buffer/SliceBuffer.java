@@ -20,30 +20,29 @@ public class SliceBuffer {
 
         buffer.flip();
         while (buffer.hasRemaining()) {
-            System.out.println(buffer.get());
+            System.out.println(buffer.get()+" == buffer原来的");
         }
 
-        System.err.println("---------------------");
+//        System.err.println("---------------------");
 
-        buffer.position(2);
-        buffer.limit(6);
+        buffer.position(2).limit(6);
         ByteBuffer slicebuffer = buffer.slice();
 
+//        System.out.println("---------");
         while (slicebuffer.hasRemaining()) {
-            System.out.println(slicebuffer.get());
+            System.out.println(slicebuffer.get()+" ** slicebuffer的");
         }
         slicebuffer.flip();
 
-        System.out.println("---------");
+//        System.out.println("---------");
         for (int i = 0; i < slicebuffer.capacity(); ++i) {
             byte b = slicebuffer.get(i);
             slicebuffer.put((byte) (b * 2));
         }
 
-        buffer.position(0);
-        buffer.limit(buffer.capacity());
+        buffer.position(0).limit(buffer.capacity());
         while (buffer.hasRemaining()) {
-            System.out.println(buffer.get());
+            System.out.println(buffer.get()+" -- 修改完的");
         }
 
     }
