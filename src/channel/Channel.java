@@ -35,7 +35,7 @@ package channel;
  * @date 2019/5/31
  *
  */
-public class TestChannel1 {
+public class Channel {
 
 	public static void main(String[] args) {
 		

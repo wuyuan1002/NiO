@@ -1,4 +1,4 @@
-package channelandbuffer;
+package channel;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,7 +12,7 @@ import java.nio.channels.FileChannel;
  * @version 1.0
  * @date 2019/6/1
  */
-public class Test1 {
+public class Test {
     public static void main(String[] args) throws Exception {
 
         //得到与文件的连接 -- 输入输出流
