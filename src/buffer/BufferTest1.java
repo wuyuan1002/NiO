@@ -23,15 +23,15 @@ import java.nio.ByteBuffer;
  *
  * 2.缓冲区中的四个核心属性(在Buffer类中定义)：
  *
- *  private int position = 0;  ----->>  位置，表示缓冲区中正在操作的数据的位置
- *  private int limit;  ----->>  界限，表示缓冲区中可以操作的数据大小，（limit后面的数据不能进行读写）
- *  private int capacity;  ----->>  容量，表示缓冲区中最大存储数据的容量，一旦声明就不能改变。也就是数组一旦创建它的大小就不能改变了
- *  private int mark = -1;  ----->>  标记，记录当前position的位置，之后可通过reset()方法使当前position恢复到mark()所记录的位置
+ *  private int position = 0; -->> 位置，表示缓冲区中正在操作的数据的位置
+ *  private int limit; -->> 界限，表示缓冲区中可以操作的数据大小，（limit后面的数据不能进行读写）
+ *  private int capacity; -->> 容量，表示缓冲区中最大存储数据的容量，一旦声明就不能改变。也就是数组一旦创建它的大小就不能改变了
+ *  private int mark = -1; -->> 标记，记录当前position的位置，之后可通过reset()方法使当前position恢复到mark()所记录的位置
  *
  *  大小关系: 0 <= mark <= position <= limit <= capacity
  *
  *
- *  ************缓冲区中可操作的数据位于position和limit之间*************
+ *  ************ 缓冲区中可操作的数据位于 position 和 limit 之间 *************
  *
  *
  *
