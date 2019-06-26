@@ -120,7 +120,7 @@ public class BufferTest1 {
         System.out.println(buf.capacity());
 
         //clear()后，缓冲区中的数据还在
-        byte[] dstq = new byte[buf.limit()];
+        byte[] dstq = new byte[buf.capacity()];
         buf.get(dstq);
         System.out.println(new String(dstq));
 
