@@ -33,9 +33,7 @@ public class Test {
             buffer.clear();
         }
 
-        //关闭通道和流
-        inchannel.close();
-        outchannel.close();
+        //关闭流和通道 -- 关闭流时,如果 通道 != null, 则会关闭流对应的通道
         in.close();
         out.close();
 
