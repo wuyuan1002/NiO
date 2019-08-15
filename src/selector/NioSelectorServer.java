@@ -92,6 +92,16 @@ public class NioSelectorServer {
                  *
                  * 如果不添加参数则返回所有类型事件的已就绪的channel的数量，
                  * 如果添加参数则返回参数类型的事件的已就绪的channel的数量，如selector.select(SelectionKey.OP_ACCEPT);返回注册了连接事件并已就绪的channel的数量
+                 *
+                 * 上面的while循环也可以这样写:
+                 * int num = 0;
+                 * while((num = selector.select()) != 0){
+                 *     System.out.println("本次有" + num + "个事件就绪.");
+                 *     Set<SelectionKey> selectionKeys = selector.selectedKeys();
+                 *     ...
+                 *     ...
+                 * }
+                 *
                  */
                 selector.select();
                 
