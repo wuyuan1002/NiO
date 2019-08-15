@@ -118,7 +118,7 @@ public class NioSelectorServer {
                      * 每一次处理完必须把该selectionKey从selected-key集合中移除，
                      * 不然下次处理时会出现重复处理。(本来该selectionKey没有就绪，但不删除的话会有上次遗留的该selectionKey)
                      *
-                     * 使用迭代器的remove方法或者集合的remove方法一处selectionKey
+                     * 使用迭代器的remove方法或者集合的remove方法移除selectionKey
                      */
                     iterator.remove();
                     // selectionKeys.remove(selectionKey);
