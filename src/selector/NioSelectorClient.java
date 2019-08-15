@@ -5,14 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wuyuan
@@ -37,32 +37,28 @@ public class NioSelectorClient {
                 selectionKeys.forEach(selectionKey -> {
                     if (selectionKey.isConnectable()) {
                         SocketChannel client = (SocketChannel) selectionKey.channel();
-                        try {
-                            client.register(selector, SelectionKey.OP_READ);
-                        } catch (ClosedChannelException e) {
-                            e.printStackTrace();
-                        }
-                        
-                        
                         if (client.isConnectionPending()) {
                             try {
                                 client.finishConnect();
+                                client.register(selector, SelectionKey.OP_READ);
                                 ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
                                 writeBuffer.put((LocalDateTime.now() + "连接成功！").getBytes());
                                 writeBuffer.flip();
                                 client.write(writeBuffer);
-                                
-                                ExecutorService executorService = Executors.newSingleThreadExecutor(Executors.defaultThreadFactory());
-                                executorService.submit(() -> {
+    
+                                ThreadPoolExecutor threadPool = new ThreadPoolExecutor(3, 3, 3, TimeUnit.MINUTES,new LinkedBlockingQueue<>(3));
+                                threadPool.execute(() -> {
                                     while (true) {
-                                        writeBuffer.clear();
-                                        InputStreamReader input = new InputStreamReader(System.in);
-                                        BufferedReader br = new BufferedReader(input);
-                                        
-                                        String sendMessage = br.readLine();
-                                        writeBuffer.put(sendMessage.getBytes());
-                                        writeBuffer.flip();
-                                        client.write(writeBuffer);
+                                        try {
+                                            writeBuffer.clear();
+                                            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                                            String sendMessage = br.readLine();
+                                            writeBuffer.put(sendMessage.getBytes());
+                                            writeBuffer.flip();
+                                            client.write(writeBuffer);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 });
                             } catch (IOException e) {

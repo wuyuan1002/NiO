@@ -114,6 +114,11 @@ public class NioSelectorServer {
                     
                     //得到每一个selectionKey
                     SelectionKey selectionKey = iterator.next();
+                    
+                    //如果事件失效，则直接返回
+                    if (!selectionKey.isValid()) {
+                        return;
+                    }
                     /*
                      * 每一次处理完必须把该selectionKey从selected-key集合中移除，
                      * 不然下次处理时会出现重复处理。(本来该selectionKey没有就绪，但不删除的话会有上次遗留的该selectionKey)
