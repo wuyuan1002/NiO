@@ -7,6 +7,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -107,7 +108,6 @@ public class NioSelectorServer {
                 
                 //获取相关事件被捕获的selectionKey的集合(监听的事件发生了的selectionKey的集合)
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();
-                
                 //循环遍历selectionKeys集合的每一个元素，判断每个SelectionKey是什么类型的事件，根据事件类型的不同进行不同的处理
                 Iterator<SelectionKey> iterator = selectionKeys.iterator();
                 while (iterator.hasNext()) {
@@ -126,8 +126,6 @@ public class NioSelectorServer {
                      * 使用迭代器的remove方法或者集合的remove方法移除selectionKey
                      */
                     iterator.remove();
-                    // selectionKeys.remove(selectionKey);
-                    
                     
                     //定义客户端的连接通道
                     SocketChannel client;
@@ -145,12 +143,9 @@ public class NioSelectorServer {
                             client.register(selector, SelectionKey.OP_READ);
                             
                             //定义存储通道到map集合的key(这里生成一个UUID作为key)，服务器通过map集合找到所有连接着的客户端
-                            String key = "【" + UUID.randomUUID().toString() + "】";
+                            String key = "【" + UUID.randomUUID().toString().substring(0, 6) + "】";
                             //将连接过来的客户端通道存储到map中
                             SERVER_SOCKET_MAP.put(key, client);
-                            
-                            
-                            System.out.println(client + "已连接！");
                             
                             
                             /**如果是读事件发生*/
@@ -160,41 +155,30 @@ public class NioSelectorServer {
                             //定义读取数据的缓冲区
                             ByteBuffer buffer = ByteBuffer.allocate(1024);
                             //读取数据到缓冲区,把读到的数据都放到转成一个string，最后统一转发给其他客户端
-                            StringBuilder stringBuilder = new StringBuilder();
-                            while (client.read(buffer) != -1) {
-                                buffer.flip();
-                                
-                                //定义字符集编码与解码
-                                Charset charset = Charset.forName("utf-8");
-                                stringBuilder.append(charset.decode(buffer).array());
-                                
-                                buffer.clear();
-                            }
                             
-                            //将得到的数据转换成字符串
-                            String receiveMessage = stringBuilder.toString();
-                            
+                            client.read(buffer);
+                            buffer.flip();
+                            Charset charset = StandardCharsets.UTF_8;
+                            String receiveMessage = charset.decode(buffer).toString();
+                            System.err.println(receiveMessage);
                             
                             /** 将得到的数据广播转发给所有客户端 */
                             //获取发送数据的连接通道的key
                             String sendKey = null;
                             for (Map.Entry<String, SocketChannel> entry : SERVER_SOCKET_MAP.entrySet()) {
-                                if (client == entry.getValue()) {
+                                if (entry.getValue() == client) {
                                     sendKey = entry.getKey();
                                     break;
                                 }
                             }
-                            
                             //发送给每一个客户端
                             for (Map.Entry<String, SocketChannel> entry : SERVER_SOCKET_MAP.entrySet()) {
-                                //定义发送数据的缓冲区
                                 ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
-                                //如果是自己的话
                                 if (entry.getKey().equals(sendKey)) {
+                                    //如果是自己的话
                                     writeBuffer.put(("【自己】" + sendKey + " : " + receiveMessage).getBytes());
-                                    
-                                    //如果不是自己的话
                                 } else {
+                                    //如果不是自己的话
                                     writeBuffer.put((sendKey + " : " + receiveMessage).getBytes());
                                 }
                                 
@@ -202,9 +186,7 @@ public class NioSelectorServer {
                                 //发送给客户端
                                 entry.getValue().write(writeBuffer);
                             }
-                            
                         }
-                        
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
