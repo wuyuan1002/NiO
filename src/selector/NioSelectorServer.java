@@ -1,6 +1,7 @@
 package selector;
 
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -69,8 +70,10 @@ public class NioSelectorServer {
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         //将通道设置成非阻塞的(只有非阻塞的通道才可以注册到选择器Selector上)
         serverSocketChannel.configureBlocking(false);
+        //获取通道对应的socket
+        ServerSocket serverSocket = serverSocketChannel.socket();
         //serverSocketChannel对象绑定监听端口号，用来让客户端连接
-        serverSocketChannel.bind(new InetSocketAddress(8899));
+        serverSocket.bind(new InetSocketAddress(8899));
         //创建selector选择器对象
         Selector selector = Selector.open();
         /*
@@ -96,7 +99,7 @@ public class NioSelectorServer {
                  *
                  * 上面的while循环也可以这样写:
                  * int num = 0;
-                 * while((num = selector.select()) != 0){
+                 * while(!Thread.interrupted() && (num = selector.select()) != 0){
                  *     System.out.println("本次有" + num + "个事件就绪.");
                  *     Set<SelectionKey> selectionKeys = selector.selectedKeys();
                  *     ...
