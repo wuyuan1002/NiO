@@ -12,8 +12,7 @@ import java.io.IOException;
  * 当有连接事件发生后,它会得到连接的客户端通道,把这些连接通道转给worker,
  * worker把这些连接注册到自己的selector上,不断监听通道的读写事件.
  *
- * 也就是说,boss的selector上只注册着一个channel,那就是服务器的
- * serversocketchannel,感兴趣的事件是连接事件.
+ * 也就是说,boss的selector上只注册着一个channel,那就是服务器的serversocketchannel,感兴趣的事件是连接事件.
  * 而worker的selector上注册着所有客户端的连接,感兴趣的事件是读或写事件
  *
  * @author wuyuan
