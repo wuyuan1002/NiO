@@ -7,7 +7,6 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -26,7 +25,7 @@ public class Reactor implements Runnable {
     //处理事件的线程池
     private final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(3, 3, 3, TimeUnit.MINUTES, new LinkedBlockingQueue<>(3));
     
-    public Reactor(int port) throws IOException {
+    Reactor(int port) throws IOException {
         selector = Selector.open();
         serverSocketChannel = ServerSocketChannel.open();
         ServerSocket serverSocket = serverSocketChannel.socket();
@@ -48,10 +47,9 @@ public class Reactor implements Runnable {
                 System.out.println("本次有" + num + "个事件发生了！");
                 
                 Set<SelectionKey> keys = selector.selectedKeys();
-                Iterator it = keys.iterator();
-                while (it.hasNext()) {
+                for (SelectionKey key : keys) {
                     //将每一个事件分发
-                    dispatch((SelectionKey) it.next());
+                    dispatch(key);
                 }
                 //清空selectedKeySet，防止下次重复处理
                 keys.clear();

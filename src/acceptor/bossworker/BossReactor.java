@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel;
 import java.util.Set;
 
 /**
- * 选择器，监听事件的发生，当有事件发生时进行对任务的分发
+ * boss负责监听客户端的连接事件，当有连接时将连接分发，注册到worker的selector上，由worker监听连接的读写事件
  *
  * @author wuyuan
  * @date 2019/8/18
@@ -22,17 +22,17 @@ public class BossReactor implements Runnable {
     
     private final WorkerReactor workerReactor;
     
-    public BossReactor(int port) throws IOException {
-        selector = Selector.open();
+    BossReactor(int port) throws IOException {
         serverSocketChannel = ServerSocketChannel.open();
         ServerSocket serverSocket = serverSocketChannel.socket();
         serverSocket.bind(new InetSocketAddress(port));
         serverSocketChannel.configureBlocking(false);
+        selector = Selector.open();
         //boss只关注连接事件
         key = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         key.attach(new Acceptor());
         
-        //创建worker并启动它 -- 一个boss可以有多个worker
+        //创建并启动worker -- 一个boss可以有多个worker
         workerReactor = new WorkerReactor();
         new Thread(workerReactor).start();
     }
@@ -77,8 +77,8 @@ public class BossReactor implements Runnable {
                     SocketChannel channel = (SocketChannel) key.channel();
                     new Handler(BossReactor.this.workerReactor.getSelector(), channel);
                 }
+                this.keys.clear();
             }
-            this.keys.clear();
         }
     }
     

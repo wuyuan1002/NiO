@@ -3,7 +3,7 @@ package acceptor;
 import java.io.IOException;
 
 /**
- * Acceptor是反应器模式:
+ * Acceptor是反应器模式,也叫 Dispatcher调度器模式或 Notifier通知器模式:
  * 监听事件的发生，当有事件发生后，分发给其对应的处理器处理(此处使用多线程实现异步处理，多个handler处理器同时执行)
  *
  *

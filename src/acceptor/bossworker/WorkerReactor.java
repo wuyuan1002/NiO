@@ -3,13 +3,14 @@ package acceptor.bossworker;
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * worker负责监听连接的读写事件并分发处理
+ *
  * @author wuyuan
  * @date 2019/8/18
  */
@@ -19,7 +20,7 @@ public class WorkerReactor implements Runnable {
     //线程池用来异步执行各个连接的读写事件
     private final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(3, 3, 3, TimeUnit.MINUTES, new LinkedBlockingQueue<>(3));
     
-    public WorkerReactor() throws IOException {
+    WorkerReactor() throws IOException {
         this.selector = Selector.open();
     }
     
@@ -28,10 +29,9 @@ public class WorkerReactor implements Runnable {
         try {
             while (!Thread.interrupted() && (selector.select() != 0)) {
                 Set<SelectionKey> keys = selector.selectedKeys();
-                Iterator it = keys.iterator();
-                while (it.hasNext()) {
+                for (SelectionKey key : keys) {
                     //将每一个事件分发
-                    dispatch((SelectionKey) it.next());
+                    dispatch(key);
                 }
                 //清空selectedKeySet，防止下次重复处理
                 keys.clear();
