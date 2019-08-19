@@ -29,10 +29,8 @@ public class WorkerReactor implements Runnable {
         try {
             while (!Thread.interrupted() && (selector.select() != 0)) {
                 Set<SelectionKey> keys = selector.selectedKeys();
-                for (SelectionKey key : keys) {
-                    //将每一个事件分发
-                    dispatch(key);
-                }
+                //将事件分发
+                dispatch(keys);
                 //清空selectedKeySet，防止下次重复处理
                 keys.clear();
             }
@@ -41,12 +39,14 @@ public class WorkerReactor implements Runnable {
         }
     }
     
-    private void dispatch(SelectionKey key) {
-        //获取事件上面绑定的handler处理器对象，并执行该对象的方法来处理该事件
-        Runnable handler = (Runnable) (key.attachment());
-        if (handler != null) {
-            //在另一个线程中处理，实现异步操作
-            threadPool.execute(handler);
+    private void dispatch(Set<SelectionKey> keys) {
+        for (SelectionKey key : keys) {
+            //获取事件上面绑定的对象，并执行该对象的方法来处理该事件
+            Runnable r = (Runnable) (key.attachment());
+            if (r != null) {
+                //在另一个线程中处理，实现异步操作
+                threadPool.execute(r);
+            }
         }
     }
     
