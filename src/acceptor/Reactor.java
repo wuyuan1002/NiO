@@ -60,10 +60,10 @@ public class Reactor implements Runnable {
     private void dispatch(Set<SelectionKey> keys) {
         for (SelectionKey key : keys) {
             //获取事件上面绑定的对象，并执行该对象的方法来处理该事件
-            Runnable r = (Runnable) (key.attachment());
-            if (r != null) {
+            Runnable handler = (Runnable) (key.attachment());
+            if (handler != null) {
                 //在另一个线程中处理，实现异步操作
-                threadPool.execute(r);
+                threadPool.execute(handler);
             }
         }
     }
