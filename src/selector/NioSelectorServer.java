@@ -73,7 +73,7 @@ public class NioSelectorServer {
         //获取通道对应的socket
         ServerSocket serverSocket = serverSocketChannel.socket();
         //serverSocketChannel对象绑定监听端口号，用来让客户端连接
-        serverSocket.bind(new InetSocketAddress(8899));
+        serverSocket.bind(new InetSocketAddress(8088));
         //创建selector选择器对象
         Selector selector = Selector.open();
         /*
@@ -157,7 +157,6 @@ public class NioSelectorServer {
                             client = (SocketChannel) selectionKey.channel();
                             //定义读取数据的缓冲区
                             ByteBuffer buffer = ByteBuffer.allocate(1024);
-                            //读取数据到缓冲区,把读到的数据都放到转成一个string，最后统一转发给其他客户端
                             
                             client.read(buffer);
                             buffer.flip();

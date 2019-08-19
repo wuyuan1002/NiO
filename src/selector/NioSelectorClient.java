@@ -27,7 +27,7 @@ public class NioSelectorClient {
             
             Selector selector = Selector.open();
             socketChannel.register(selector, SelectionKey.OP_CONNECT);
-            socketChannel.connect(new InetSocketAddress("localhost", 8899));
+            socketChannel.connect(new InetSocketAddress("localhost", 8088));
             
             
             while (true) {
