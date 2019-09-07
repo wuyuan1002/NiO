@@ -29,7 +29,10 @@ public class WorkerReactor implements Runnable {
         try {
             while (!Thread.interrupted() && (selector.select() != 0)) {
                 Set<SelectionKey> keys = selector.selectedKeys();
-                //将事件分发
+                //将事件分发 --
+                //(在Netty中不会去分发任务，而是所有channel的所有的事件处理handler都由当前线程挨个执行，
+                //这样可以解决线程安全问题,因此,netty的handler中不要有执行时间过长的操作,如果有,则应该自己交给线程池
+                //处理,不然一个耗时操作会阻塞后面所有的handler.)
                 dispatch(keys);
                 //清空selectedKeySet，防止下次重复处理
                 keys.clear();
