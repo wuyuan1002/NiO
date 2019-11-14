@@ -1,9 +1,12 @@
-package acceptor.bossworker;
+package acceptor.oneworker;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 每一个客户端连接的处理器，用来处理对应的客户端连接的事件
@@ -33,21 +36,27 @@ public class Handler implements Runnable {
     
     @Override
     public void run() {
+        
         //如果是读事件
         if (this.selectionKey.isReadable()) {
             //执行相应操作
-            
-            
+            try {
+                ByteBuffer buffer = ByteBuffer.allocate(1024);
+                this.socketChannel.read(buffer);
+                buffer.flip();
+                Charset charset = StandardCharsets.UTF_8;
+                String receiveMessage = charset.decode(buffer).toString();
+                System.err.println(receiveMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         
         //如果是写事件
         if (this.selectionKey.isWritable()) {
             //执行相应操作
             
-            
         }
-        
-        
         
     }
 }

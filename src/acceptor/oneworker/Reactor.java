@@ -1,4 +1,4 @@
-package acceptor;
+package acceptor.oneworker;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

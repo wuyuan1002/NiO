@@ -1,4 +1,4 @@
-package acceptor.bossworker;
+package acceptor.twoworkers;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
