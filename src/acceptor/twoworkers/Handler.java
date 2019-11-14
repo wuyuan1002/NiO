@@ -20,6 +20,7 @@ public class Handler implements Runnable {
         try {
             this.socketChannel = accept;
             this.socketChannel.configureBlocking(false);
+            //先注册一次 -- (不知道是为什么)
             this.selectionKey = this.socketChannel.register(selector, 0);
             //给新的连接添加该Handler对象，用来处理该连接的事件
             this.selectionKey.attach(this);
