@@ -20,8 +20,8 @@ import java.nio.ByteBuffer;
  * 					4.何时销毁内存不能确定
  *
  *
- * 3.操作系统可以直接操作JVM上的内存，那为什么操作系统不直接操作那块堆上的
- * 	 缓冲区而是先把数据copy到操作系统内存上，然后再去操作呢？
+ * 3.操作系统可以直接操作JVM上的内存，那为什么操作系统不直接操作JVM堆上的
+ * 	 数据而是先把数据copy到操作系统内存上，然后再去操作呢？
  *
  * 	 答:因为如果在操作系统操作JVM的内存时,如果在那个时候在那块内存上JVM发起了GC垃圾回收,
  * 	 	在垃圾回收的时候,会出现对象的移动,这时数据就乱套了,所以要把缓冲区的数据先copy到
@@ -29,10 +29,9 @@ import java.nio.ByteBuffer;
  *
  *
  * @author wuyuan
- * @version 1.0
  * @date 2019/5/31
  */
-public class BufferTest2 {
+public class DirectByteBufferTest {
     
     public static void main(String[] args) {
         //1.创建直接缓冲区
